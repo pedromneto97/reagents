@@ -9,6 +9,7 @@ class Home extends StatelessWidget {
           "Detecção de reagentes",
           textAlign: TextAlign.center,
         ),
+        centerTitle: true,
       ),
       body: Container(
         alignment: Alignment.center,
@@ -17,7 +18,10 @@ class Home extends StatelessWidget {
           children: [
             Text("Bem vindo ao aplicativo de deteção de reagentes"),
             RaisedButton(
-              onPressed: () {},
+              onPressed: () => Navigator.pushNamed(
+                context,
+                '/detect',
+              ),
               child: Row(
                 children: [
                   Text("Começar"),
