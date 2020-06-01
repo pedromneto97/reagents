@@ -1,5 +1,10 @@
+import 'dart:async';
+
 import 'package:camera/camera.dart';
+import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
+
+import '../utils/CameraUtils.dart';
 
 class Detect extends StatefulWidget {
   @override
@@ -7,32 +12,88 @@ class Detect extends StatefulWidget {
 }
 
 class _DetectState extends State<Detect> {
-  CameraController controller;
-  final firstLine = TextEditingController();
-  final secondLine = TextEditingController();
+  final firstLineController = TextEditingController();
+  final secondLineController = TextEditingController();
   final secondLineFocusNode = FocusNode();
+  final TextRecognizer textRecognizer =
+      FirebaseVision.instance.textRecognizer();
+  final onuNumberRegex = RegExp(
+    r"\d{2,4}",
+  );
+  final riskNumberRegex = RegExp(
+    r"(x\d{2,3})|\d{2,4}",
+    caseSensitive: false,
+  );
+  CameraController cameraController;
+  CameraDescription cameraDescription;
+  bool found = false;
+  bool isDetecting = false;
+
+  Future<void> detectImage(FirebaseVisionImage image) async {
+    final processedImage = await textRecognizer.processImage(image);
+    for (TextBlock block in processedImage.blocks) {
+      List<TextLine> lines = block.lines;
+      if (lines.length == 2) {
+        String firstLine = riskNumberRegex.stringMatch(lines.first.text);
+        String secondLine = onuNumberRegex.stringMatch(lines[1].text);
+        if (firstLine != null && secondLine != null) {
+          cameraController?.stopImageStream();
+          found = true;
+          this.firstLineController.text = firstLine;
+          this.secondLineController.text = secondLine;
+        }
+      }
+    }
+  }
+
+  clear() {
+    found = false;
+    firstLineController.clear();
+    secondLineController.clear();
+    startDetecting();
+  }
+
+  void startDetecting() {
+    cameraController.startImageStream((CameraImage image) {
+      if (isDetecting || found) {
+        return;
+      }
+      isDetecting = true;
+      detectImage(FirebaseVisionImage.fromBytes(
+        ScannerUtils.concatenatePlanes(image.planes),
+        ScannerUtils.buildMetaData(
+          image,
+          ScannerUtils.rotationIntToImageRotation(
+              this.cameraDescription.sensorOrientation),
+        ),
+      )).whenComplete(() => isDetecting = false);
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    availableCameras().then((cameras) {
-      print(cameras);
-      controller = CameraController(cameras[0], ResolutionPreset.ultraHigh);
-      controller.initialize().then((_) {
+    ScannerUtils.getCamera(CameraLensDirection.back).then((value) {
+      cameraController = CameraController(value, ResolutionPreset.ultraHigh);
+      this.cameraDescription = value;
+      cameraController.initialize().then((_) {
         if (!mounted) {
           return;
         }
         setState(() {});
+        startDetecting();
       });
     });
   }
 
   @override
   void dispose() {
-    controller?.dispose();
+    cameraController?.stopImageStream();
+    cameraController?.dispose();
     secondLineFocusNode.dispose();
-    firstLine.dispose();
-    secondLine.dispose();
+    firstLineController.dispose();
+    secondLineController.dispose();
+    textRecognizer.close();
     super.dispose();
   }
 
@@ -61,11 +122,12 @@ class _DetectState extends State<Detect> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ConstrainedBox(
-              child: controller != null && controller.value.isInitialized
+              child: cameraController != null &&
+                  cameraController.value.isInitialized
                   ? AspectRatio(
-                      aspectRatio: controller.value.aspectRatio * 1.3,
-                      child: CameraPreview(controller),
-                    )
+                aspectRatio: cameraController.value.aspectRatio * 1.3,
+                child: CameraPreview(cameraController),
+              )
                   : CircularProgressIndicator(),
               constraints: BoxConstraints(
                 maxHeight: MediaQuery.of(context).size.height / 2,
@@ -88,7 +150,7 @@ class _DetectState extends State<Detect> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
-                    controller: firstLine,
+                    controller: firstLineController,
                     onFieldSubmitted: onSubmitFirstLine,
                     validator: validateFirstLine,
                     maxLength: 4,
@@ -114,7 +176,31 @@ class _DetectState extends State<Detect> {
                 ),
               ],
             ),
-            Container(
+            found
+                ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  height: 50,
+                  child: RaisedButton(
+                    onPressed: clear,
+                    child: Text("Limpar"),
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                  ),
+                ),
+                Container(
+                  height: 50,
+                  child: RaisedButton(
+                    onPressed: () {},
+                    child: Text("Procurar reagente"),
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                  ),
+                ),
+              ],
+            )
+                : Container(
               height: 50,
               child: RaisedButton(
                 onPressed: () {},
