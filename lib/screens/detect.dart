@@ -99,12 +99,12 @@ class _DetectState extends State<Detect> {
 
   onSubmitFirstLine(v) => secondLineFocusNode.requestFocus();
 
-  String validateFirstLine(String value) {
-    if (value.length < 2) {
-      return "É necessário pelo menos dois caracteres";
-    }
-    return null;
-  }
+  String validateFirstLine(String value) => !riskNumberRegex.hasMatch(value)
+      ? "Não é um número de risco válido"
+      : null;
+
+  String validateSecondLine(String value) =>
+      !onuNumberRegex.hasMatch(value) ? "Não é um número da ONU válido" : null;
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +140,7 @@ class _DetectState extends State<Detect> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: TextFormField(
+                    autovalidate: true,
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.text,
                     textCapitalization: TextCapitalization.characters,
@@ -172,6 +173,8 @@ class _DetectState extends State<Detect> {
                       ),
                     ),
                     maxLength: 4,
+                    controller: secondLineController,
+                    validator: validateSecondLine,
                   ),
                 ),
               ],
