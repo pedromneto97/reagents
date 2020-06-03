@@ -25,6 +25,14 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Home(),
         '/detect': (context) => Detect(),
+        '/reagent': (context) {
+          final Map<String, dynamic> args =
+              ModalRoute.of(context).settings.arguments;
+          return Description(
+            numberOnu: args["numberOnu"],
+            riskNumber: args["riskNumber"],
+          );
+        },
       },
     );
   }
