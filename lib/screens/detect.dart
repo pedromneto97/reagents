@@ -19,7 +19,7 @@ class _DetectState extends State<Detect> {
   final secondLineFocusNode = FocusNode();
   final TextRecognizer textRecognizer =
       FirebaseVision.instance.textRecognizer();
-  final onuNumberRegex = RegExp(
+  final numberOnuRegex = RegExp(
     r"\d{2,4}",
   );
   final riskNumberRegex = RegExp(
@@ -37,7 +37,7 @@ class _DetectState extends State<Detect> {
       List<TextLine> lines = block.lines;
       if (lines.length == 2) {
         String firstLine = riskNumberRegex.stringMatch(lines.first.text);
-        String secondLine = onuNumberRegex.stringMatch(lines[1].text);
+        String secondLine = numberOnuRegex.stringMatch(lines[1].text);
         if (firstLine != null && secondLine != null) {
           cameraController?.stopImageStream();
           found = true;
@@ -107,13 +107,13 @@ class _DetectState extends State<Detect> {
           : null;
 
   String validateSecondLine(String value) =>
-      !onuNumberRegex.hasMatch(value) ? "Não é um número da ONU válido" : null;
+      !numberOnuRegex.hasMatch(value) ? "Não é um número da ONU válido" : null;
 
   navigate() {
     if (_formKey.currentState.validate()) {
       return Navigator.pushNamed(this.context, '/reagent', arguments: {
         "riskNumber": this.firstLineController.text,
-        "onuNumber": this.secondLineController.text,
+        "numberOnu": int.parse(this.secondLineController.text),
       });
     }
     _scaffoldKey.currentState.showSnackBar(
