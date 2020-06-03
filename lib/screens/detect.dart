@@ -12,6 +12,8 @@ class Detect extends StatefulWidget {
 }
 
 class _DetectState extends State<Detect> {
+  final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final firstLineController = TextEditingController();
   final secondLineController = TextEditingController();
   final secondLineFocusNode = FocusNode();
@@ -99,16 +101,37 @@ class _DetectState extends State<Detect> {
 
   onSubmitFirstLine(v) => secondLineFocusNode.requestFocus();
 
-  String validateFirstLine(String value) => !riskNumberRegex.hasMatch(value)
-      ? "Não é um número de risco válido"
-      : null;
+  String validateFirstLine(String value) =>
+      !riskNumberRegex.hasMatch(value)
+          ? "Não é um número de risco válido"
+          : null;
 
   String validateSecondLine(String value) =>
       !onuNumberRegex.hasMatch(value) ? "Não é um número da ONU válido" : null;
 
+  navigate() {
+    if (_formKey.currentState.validate()) {
+      return Navigator.pushNamed(this.context, '/reagent', arguments: {
+        "riskNumber": this.firstLineController.text,
+        "onuNumber": this.secondLineController.text,
+      });
+    }
+    _scaffoldKey.currentState.showSnackBar(
+      SnackBar(
+        content: Text(
+          'Existem campos inválidos',
+          style: TextStyle(
+              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
+        ),
+        backgroundColor: Colors.red[900],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Detectar'),
         centerTitle: true,
@@ -130,54 +153,60 @@ class _DetectState extends State<Detect> {
               )
                   : CircularProgressIndicator(),
               constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height / 2,
+                maxHeight: MediaQuery
+                    .of(context)
+                    .size
+                    .height / 2,
                 minHeight: 50.0,
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: TextFormField(
-                    autovalidate: true,
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.text,
-                    textCapitalization: TextCapitalization.characters,
-                    decoration: InputDecoration(
-                      labelText: 'Primeira linha',
-                      hintText: 'Primeira linha da placa',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+            Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextFormField(
+                      autovalidate: true,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.text,
+                      textCapitalization: TextCapitalization.characters,
+                      decoration: InputDecoration(
+                        labelText: 'Primeira linha',
+                        hintText: 'Primeira linha da placa',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                       ),
+                      controller: firstLineController,
+                      onFieldSubmitted: onSubmitFirstLine,
+                      validator: validateFirstLine,
+                      maxLength: 4,
                     ),
-                    controller: firstLineController,
-                    onFieldSubmitted: onSubmitFirstLine,
-                    validator: validateFirstLine,
-                    maxLength: 4,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: TextFormField(
-                    autovalidate: true,
-                    focusNode: secondLineFocusNode,
-                    textInputAction: TextInputAction.done,
-                    keyboardType: TextInputType.number,
-                    textCapitalization: TextCapitalization.characters,
-                    decoration: InputDecoration(
-                      labelText: 'Segunda linha',
-                      hintText: 'Segunda linha da placa',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: TextFormField(
+                      autovalidate: true,
+                      focusNode: secondLineFocusNode,
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.number,
+                      textCapitalization: TextCapitalization.characters,
+                      decoration: InputDecoration(
+                        labelText: 'Segunda linha',
+                        hintText: 'Segunda linha da placa',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                       ),
+                      maxLength: 4,
+                      controller: secondLineController,
+                      validator: validateSecondLine,
                     ),
-                    maxLength: 4,
-                    controller: secondLineController,
-                    validator: validateSecondLine,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             found
                 ? Row(
@@ -195,7 +224,7 @@ class _DetectState extends State<Detect> {
                 Container(
                   height: 50,
                   child: RaisedButton(
-                    onPressed: () {},
+                    onPressed: navigate,
                     child: Text("Procurar reagente"),
                     color: Colors.blue,
                     textColor: Colors.white,
@@ -206,7 +235,7 @@ class _DetectState extends State<Detect> {
                 : Container(
               height: 50,
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: navigate,
                 child: Text("Procurar reagente"),
                 color: Colors.blue,
                 textColor: Colors.white,
