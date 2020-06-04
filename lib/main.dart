@@ -20,6 +20,37 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+        textTheme: TextTheme(
+          bodyText1: TextStyle(
+            color: Colors.black,
+          ),
+          headline2: TextStyle(
+            color: Colors.black,
+            fontSize: 40,
+            fontWeight: FontWeight.bold,
+          ),
+          headline3: TextStyle(
+            color: Colors.white,
+            fontSize: 26,
+            wordSpacing: 0,
+            letterSpacing: 0,
+            fontWeight: FontWeight.bold,
+          ),
+          headline4: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
+          headline5: const TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20.0),
+          headline6: TextStyle(
+            color: Colors.white,
+            fontSize: 26,
+          ),
+          subtitle1: TextStyle(
+            color: Colors.black,
+          ),
+        ),
       ),
       initialRoute: '/',
       routes: {
