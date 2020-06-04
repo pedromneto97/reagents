@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:hive/hive.dart';
 import 'package:reagentdetection/models/reagent.dart';
 
@@ -19,19 +21,129 @@ class _DescriptionState extends State<Description> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white12,
       appBar: AppBar(
         title: Text("Reagente"),
+        centerTitle: true,
       ),
       body: Container(
-        child: Padding(
-          padding: EdgeInsets.all(5.0),
+        padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 29.0),
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
             children: [
-              Text("Reagente A"),
-              Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: Text("Texto bem grande"),
+              Text(
+                reagent.nameAndDescription,
+                style: Theme.of(context).textTheme.headline3,
+                textAlign: TextAlign.center,
+              ),
+              Container(
+                color: Colors.white,
+                padding: EdgeInsets.all(3.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      margin: EdgeInsets.all(0),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 4.0),
+                      ),
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              "Número de risco",
+                              style: Theme.of(context).textTheme.headline4,
+                            ),
+                            Text(
+                              this.reagent.riskNumber,
+                              style: Theme.of(context).textTheme.headline2,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      margin: EdgeInsets.all(0),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 4.0),
+                      ),
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Text(
+                              "Número da ONU",
+                              style: Theme.of(context).textTheme.headline4,
+                            ),
+                            Text(
+                              this.reagent.numberONU.toString(),
+                              style: Theme.of(context).textTheme.headline2,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                color: Colors.white,
+                padding: EdgeInsets.all(3.0),
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black, width: 4.0),
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text(
+                          "Número de Classe de Risco",
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        Text(
+                          this.reagent.riskClass,
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+                  Container(
+                    child: Image.asset(
+                      'lib/assets/weight-hanging-solid.png',
+                      height: 74,
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        "Número de Classe de Risco",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            .apply(color: Colors.white),
+                      ),
+                      Text(
+                        this.reagent.limit + " KG",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline2
+                            .apply(color: Colors.white),
+                      ),
+                    ],
+                  )
+                ],
               ),
             ],
           ),
@@ -48,8 +160,8 @@ class _DescriptionState extends State<Description> {
     if (box.isOpen) {
       try {
         reagent = box.values.firstWhere(
-          (element) =>
-              element.numberONU == this.widget.numberOnu &&
+              (element) =>
+          element.numberONU == this.widget.numberOnu &&
               element.riskNumber == this.widget.riskNumber,
         );
       } catch (exception) {}
@@ -57,8 +169,8 @@ class _DescriptionState extends State<Description> {
       Hive.openBox<Reagent>("onuBox").then((value) {
         box = value;
         reagent = box.values.firstWhere(
-          (element) =>
-              element.numberONU == this.widget.numberOnu &&
+              (element) =>
+          element.numberONU == this.widget.numberOnu &&
               element.riskNumber == this.widget.riskNumber,
         );
       });
