@@ -40,9 +40,11 @@ class _DetectState extends State<Detect> {
         String secondLine = numberOnuRegex.stringMatch(lines[1].text);
         if (firstLine != null && secondLine != null) {
           cameraController?.stopImageStream();
-          found = true;
           this.firstLineController.text = firstLine;
           this.secondLineController.text = secondLine;
+          setState(() {
+            found = true;
+          });
         }
       }
     }
