@@ -92,7 +92,6 @@ class _DetectState extends State<Detect> {
 
   @override
   void dispose() {
-    cameraController?.stopImageStream();
     cameraController?.dispose();
     secondLineFocusNode.dispose();
     firstLineController.dispose();
