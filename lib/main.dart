@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:reagentdetection/models/reagent.dart';
 import 'package:reagentdetection/screens/screens.dart';
 import 'package:reagentdetection/services/bootService.dart';
+import 'package:reagentdetection/utils/Scale.dart';
 
 void main() async {
   runApp(MyApp());
@@ -23,32 +24,42 @@ class MyApp extends StatelessWidget {
         textTheme: TextTheme(
           bodyText1: TextStyle(
             color: Colors.black,
+            fontFamily: 'ArialRoundedMT',
           ),
           headline2: TextStyle(
             color: Colors.black,
-            fontSize: 40,
+            fontSize: scaleFont(40),
             fontWeight: FontWeight.bold,
+            fontFamily: 'ArialRoundedMT',
           ),
           headline3: TextStyle(
             color: Colors.white,
-            fontSize: 26,
+            fontSize: scaleFont(26),
             wordSpacing: 0,
             letterSpacing: 0,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
+            fontFamily: 'ArialRoundedMT',
           ),
           headline4: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
-            fontSize: 20.0,
+            fontSize: scaleFont(20),
+            fontFamily: 'ArialRoundedMT',
           ),
-          headline5: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20.0),
+          headline5: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: scaleFont(20),
+            fontFamily: 'ArialRoundedMT',
+          ),
           headline6: TextStyle(
             color: Colors.white,
-            fontSize: 26,
+            fontSize: scaleFont(26),
+            fontFamily: 'ArialRoundedMT',
           ),
           subtitle1: TextStyle(
             color: Colors.black,
+            fontFamily: 'ArialRoundedMT',
           ),
         ),
       ),

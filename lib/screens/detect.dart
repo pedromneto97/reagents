@@ -102,10 +102,9 @@ class _DetectState extends State<Detect> {
 
   onSubmitFirstLine(v) => secondLineFocusNode.requestFocus();
 
-  String validateFirstLine(String value) =>
-      !riskNumberRegex.hasMatch(value)
-          ? "Não é um número de risco válido"
-          : null;
+  String validateFirstLine(String value) => !riskNumberRegex.hasMatch(value)
+      ? "Não é um número de risco válido"
+      : null;
 
   String validateSecondLine(String value) =>
       !numberOnuRegex.hasMatch(value) ? "Não é um número da ONU válido" : null;
@@ -157,7 +156,7 @@ class _DetectState extends State<Detect> {
                 maxHeight: MediaQuery
                     .of(context)
                     .size
-                    .height / 2,
+                    .height / 2.5,
                 minHeight: 50.0,
               ),
             ),

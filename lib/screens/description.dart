@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:hive/hive.dart';
 import 'package:reagentdetection/models/reagent.dart';
+import 'package:reagentdetection/utils/Scale.dart';
 
 class Description extends StatefulWidget {
   final int numberOnu;
@@ -27,7 +28,10 @@ class _DescriptionState extends State<Description> {
         centerTitle: true,
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 29.0),
+        padding: EdgeInsets.symmetric(
+          horizontal: scale(36),
+          vertical: verticalScale(29),
+        ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -41,12 +45,17 @@ class _DescriptionState extends State<Description> {
               ),
               Container(
                 color: Colors.white,
-                padding: EdgeInsets.all(3.0),
+                padding: EdgeInsets.symmetric(
+                  horizontal: scale(3),
+                  vertical: verticalScale(3),
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 15),
+                      padding: EdgeInsets.symmetric(
+                        vertical: verticalScale(15),
+                      ),
                       margin: EdgeInsets.all(0),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black, width: 4.0),
@@ -68,7 +77,9 @@ class _DescriptionState extends State<Description> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 15),
+                      padding: EdgeInsets.symmetric(
+                        vertical: verticalScale(15),
+                      ),
                       margin: EdgeInsets.all(0),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black, width: 4.0),
@@ -94,9 +105,14 @@ class _DescriptionState extends State<Description> {
               ),
               Container(
                 color: Colors.white,
-                padding: EdgeInsets.all(3.0),
+                padding: EdgeInsets.symmetric(
+                  horizontal: scale(3),
+                  vertical: verticalScale(3),
+                ),
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding: EdgeInsets.symmetric(
+                    vertical: verticalScale(15),
+                  ),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black, width: 4.0),
                   ),
@@ -106,7 +122,10 @@ class _DescriptionState extends State<Description> {
                       children: [
                         Text(
                           "Número de Classe de Risco",
-                          style: Theme.of(context).textTheme.headline4,
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .headline4,
                         ),
                         Text(
                           this.reagent.riskClass,
@@ -122,7 +141,7 @@ class _DescriptionState extends State<Description> {
                   Container(
                     child: Image.asset(
                       'lib/assets/weight-hanging-solid.png',
-                      height: 74,
+                      height: verticalScale(74),
                     ),
                   ),
                   Column(
