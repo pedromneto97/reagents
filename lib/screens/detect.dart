@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 
 import '../utils/CameraUtils.dart';
 
@@ -17,8 +17,7 @@ class _DetectState extends State<Detect> {
   final firstLineController = TextEditingController();
   final secondLineController = TextEditingController();
   final secondLineFocusNode = FocusNode();
-  final TextRecognizer textRecognizer =
-      FirebaseVision.instance.textRecognizer();
+  final TextDetector textRecognizer = GoogleMlKit.vision.textDetector();
   final numberOnuRegex = RegExp(
     r"\d{2,4}",
   );
@@ -31,7 +30,7 @@ class _DetectState extends State<Detect> {
   bool found = false;
   bool isDetecting = false;
 
-  Future<void> detectImage(FirebaseVisionImage image) async {
+  Future<void> detectImage(InputImage image) async {
     final processedImage = await textRecognizer.processImage(image);
     for (TextBlock block in processedImage.blocks) {
       List<TextLine> lines = block.lines;
@@ -39,15 +38,16 @@ class _DetectState extends State<Detect> {
         String firstLine = riskNumberRegex.stringMatch(lines.first.text);
         String secondLine = numberOnuRegex.stringMatch(lines[1].text);
         if (firstLine != null && secondLine != null) {
-          cameraController?.stopImageStream();
           this.firstLineController.text = firstLine;
           this.secondLineController.text = secondLine;
           setState(() {
             found = true;
           });
+          return;
         }
       }
     }
+    startDetecting();
   }
 
   clear() {
@@ -63,9 +63,9 @@ class _DetectState extends State<Detect> {
         return;
       }
       isDetecting = true;
-      detectImage(FirebaseVisionImage.fromBytes(
-        ScannerUtils.concatenatePlanes(image.planes),
-        ScannerUtils.buildMetaData(
+      detectImage(InputImage.fromBytes(
+        bytes: ScannerUtils.concatenatePlanes(image.planes),
+        inputImageData: ScannerUtils.buildMetaData(
           image,
           ScannerUtils.rotationIntToImageRotation(
               this.cameraDescription.sensorOrientation),
@@ -145,18 +145,10 @@ class _DetectState extends State<Detect> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ConstrainedBox(
-              child: cameraController != null &&
-                  cameraController.value.isInitialized
-                  ? AspectRatio(
-                aspectRatio: cameraController.value.aspectRatio * 1.3,
-                child: CameraPreview(cameraController),
-              )
-                  : CircularProgressIndicator(),
+              child: cameraController?.buildPreview() ??
+                  CircularProgressIndicator(),
               constraints: BoxConstraints(
-                maxHeight: MediaQuery
-                    .of(context)
-                    .size
-                    .height / 2.5,
+                maxHeight: MediaQuery.of(context).size.height / 2.5,
                 minHeight: 50.0,
               ),
             ),
@@ -210,37 +202,37 @@ class _DetectState extends State<Detect> {
             ),
             found
                 ? Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  height: 50,
-                  child: RaisedButton(
-                    onPressed: clear,
-                    child: Text("Limpar"),
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                  ),
-                ),
-                Container(
-                  height: 50,
-                  child: RaisedButton(
-                    onPressed: navigate,
-                    child: Text("Procurar reagente"),
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                  ),
-                ),
-              ],
-            )
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        height: 50,
+                        child: RaisedButton(
+                          onPressed: clear,
+                          child: Text("Limpar"),
+                          color: Colors.blue,
+                          textColor: Colors.white,
+                        ),
+                      ),
+                      Container(
+                        height: 50,
+                        child: RaisedButton(
+                          onPressed: navigate,
+                          child: Text("Procurar reagente"),
+                          color: Colors.blue,
+                          textColor: Colors.white,
+                        ),
+                      ),
+                    ],
+                  )
                 : Container(
-              height: 50,
-              child: RaisedButton(
-                onPressed: navigate,
-                child: Text("Procurar reagente"),
-                color: Colors.blue,
-                textColor: Colors.white,
-              ),
-            ),
+                    height: 50,
+                    child: RaisedButton(
+                      onPressed: navigate,
+                      child: Text("Procurar reagente"),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                    ),
+                  ),
           ],
         ),
       ),

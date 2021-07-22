@@ -7,14 +7,14 @@ import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:camera/camera.dart';
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/foundation.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 
 class ScannerUtils {
   ScannerUtils._();
 
   static Future<CameraDescription> getCamera(CameraLensDirection dir) async {
-    return await availableCameras().then(
+    return availableCameras().then(
       (List<CameraDescription> cameras) => cameras.firstWhere(
         (CameraDescription camera) => camera.lensDirection == dir,
       ),
@@ -29,37 +29,35 @@ class ScannerUtils {
     return allBytes.done().buffer.asUint8List();
   }
 
-  static FirebaseVisionImageMetadata buildMetaData(
+  static InputImageData buildMetaData(
     CameraImage image,
-    ImageRotation rotation,
+    InputImageRotation rotation,
   ) {
-    return FirebaseVisionImageMetadata(
-      rawFormat: image.format.raw,
-      size: Size(image.width.toDouble(), image.height.toDouble()),
-      rotation: rotation,
+    return InputImageData(
+      size: Size(
+        image.width.toDouble(),
+        image.height.toDouble(),
+      ),
+      imageRotation: rotation,
+      inputImageFormat:
+          InputImageFormatMethods.fromRawValue(image.format.raw) ??
+              InputImageFormat.NV21,
       planeData: image.planes.map(
         (Plane plane) {
-          return FirebaseVisionImagePlaneMetadata(
+          return InputImagePlaneMetadata(
             bytesPerRow: plane.bytesPerRow,
             height: plane.height,
             width: plane.width,
           );
         },
-      ).toList(),
+      ).toList(
+        growable: false,
+      ),
     );
   }
 
-  static ImageRotation rotationIntToImageRotation(int rotation) {
-    switch (rotation) {
-      case 0:
-        return ImageRotation.rotation0;
-      case 90:
-        return ImageRotation.rotation90;
-      case 180:
-        return ImageRotation.rotation180;
-      default:
-        assert(rotation == 270);
-        return ImageRotation.rotation270;
-    }
+  static InputImageRotation rotationIntToImageRotation(int rotation) {
+    return InputImageRotationMethods.fromRawValue(rotation) ??
+        InputImageRotation.Rotation_0deg;
   }
 }
