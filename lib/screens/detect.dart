@@ -4,25 +4,26 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 
-import '../utils/CameraUtils.dart';
+import '../utils/camera_utils.dart';
 
 class Detect extends StatefulWidget {
+  const Detect({Key key}) : super(key: key);
+
   @override
   _DetectState createState() => _DetectState();
 }
 
 class _DetectState extends State<Detect> {
   final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final firstLineController = TextEditingController();
   final secondLineController = TextEditingController();
   final secondLineFocusNode = FocusNode();
   final TextDetector textRecognizer = GoogleMlKit.vision.textDetector();
   final numberOnuRegex = RegExp(
-    r"\d{2,4}",
+    r'\d{2,4}',
   );
   final riskNumberRegex = RegExp(
-    r"(x\d{2,3})|\d{2,4}",
+    r'(x\d{2,3})|\d{2,4}',
     caseSensitive: false,
   );
   CameraController cameraController;
@@ -38,8 +39,8 @@ class _DetectState extends State<Detect> {
         String firstLine = riskNumberRegex.stringMatch(lines.first.text);
         String secondLine = numberOnuRegex.stringMatch(lines[1].text);
         if (firstLine != null && secondLine != null) {
-          this.firstLineController.text = firstLine;
-          this.secondLineController.text = secondLine;
+          firstLineController.text = firstLine;
+          secondLineController.text = secondLine;
           setState(() {
             found = true;
           });
@@ -67,7 +68,7 @@ class _DetectState extends State<Detect> {
         inputImageData: ScannerUtils.buildMetaData(
           image,
           ScannerUtils.rotationIntToImageRotation(
-              this.cameraDescription.sensorOrientation),
+              cameraDescription.sensorOrientation),
         ),
       )).whenComplete(() => isDetecting = false);
     });
@@ -82,7 +83,7 @@ class _DetectState extends State<Detect> {
         ResolutionPreset.ultraHigh,
         enableAudio: false,
       );
-      this.cameraDescription = value;
+      cameraDescription = value;
       cameraController.initialize().then((_) {
         if (!mounted) {
           return;
@@ -106,22 +107,22 @@ class _DetectState extends State<Detect> {
   onSubmitFirstLine(v) => secondLineFocusNode.requestFocus();
 
   String validateFirstLine(String value) => !riskNumberRegex.hasMatch(value)
-      ? "Não é um número de risco válido"
+      ? 'Não é um número de risco válido'
       : null;
 
   String validateSecondLine(String value) =>
-      !numberOnuRegex.hasMatch(value) ? "Não é um número da ONU válido" : null;
+      !numberOnuRegex.hasMatch(value) ? 'Não é um número da ONU válido' : null;
 
   navigate() {
     if (_formKey.currentState.validate()) {
-      return Navigator.pushNamed(this.context, '/reagent', arguments: {
-        "riskNumber": this.firstLineController.text,
-        "numberOnu": int.parse(this.secondLineController.text),
+      return Navigator.pushNamed(context, '/reagent', arguments: {
+        'riskNumber': firstLineController.text,
+        'numberOnu': int.parse(secondLineController.text),
       });
     }
-    _scaffoldKey.currentState.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
+        content: const Text(
           'Existem campos inválidos',
           style: TextStyle(
               color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
@@ -134,9 +135,8 @@ class _DetectState extends State<Detect> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Detectar'),
+        title: const Text('Detectar'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -149,7 +149,7 @@ class _DetectState extends State<Detect> {
           children: [
             ConstrainedBox(
               child: cameraController?.buildPreview() ??
-                  CircularProgressIndicator(),
+                  const CircularProgressIndicator(),
               constraints: BoxConstraints(
                 maxHeight: MediaQuery.of(context).size.height / 2.5,
                 minHeight: 50.0,
@@ -163,7 +163,6 @@ class _DetectState extends State<Detect> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: TextFormField(
-                      autovalidate: true,
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.characters,
@@ -183,7 +182,6 @@ class _DetectState extends State<Detect> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: TextFormField(
-                      autovalidate: true,
                       focusNode: secondLineFocusNode,
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.number,
@@ -207,33 +205,31 @@ class _DetectState extends State<Detect> {
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
-                        height: 50,
-                        child: RaisedButton(
-                          onPressed: clear,
-                          child: Text("Limpar"),
-                          color: Colors.blue,
-                          textColor: Colors.white,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: ElevatedButton(
+                            onPressed: clear,
+                            child: const Text('Limpar'),
+                          ),
                         ),
                       ),
-                      Container(
-                        height: 50,
-                        child: RaisedButton(
-                          onPressed: navigate,
-                          child: Text("Procurar reagente"),
-                          color: Colors.blue,
-                          textColor: Colors.white,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: OutlinedButton(
+                            onPressed: navigate,
+                            child: const Text('Procurar reagente'),
+                          ),
                         ),
                       ),
                     ],
                   )
-                : Container(
+                : SizedBox(
                     height: 50,
-                    child: RaisedButton(
+                    child: ElevatedButton(
                       onPressed: navigate,
-                      child: Text("Procurar reagente"),
-                      color: Colors.blue,
-                      textColor: Colors.white,
+                      child: const Text('Procurar reagente'),
                     ),
                   ),
           ],

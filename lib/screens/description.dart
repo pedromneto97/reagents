@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:hive/hive.dart';
 import 'package:reagentdetection/models/reagent.dart';
-import 'package:reagentdetection/utils/Scale.dart';
+import 'package:reagentdetection/utils/scale.dart';
 
 class Description extends StatefulWidget {
   final int numberOnu;
@@ -24,7 +24,7 @@ class _DescriptionState extends State<Description> {
     return Scaffold(
       backgroundColor: Colors.white12,
       appBar: AppBar(
-        title: Text("Reagente"),
+        title: const Text('Reagente'),
         centerTitle: true,
       ),
       body: Container(
@@ -56,7 +56,7 @@ class _DescriptionState extends State<Description> {
                       padding: EdgeInsets.symmetric(
                         vertical: verticalScale(15),
                       ),
-                      margin: EdgeInsets.all(0),
+                      margin: const EdgeInsets.all(0),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black, width: 4.0),
                       ),
@@ -65,11 +65,11 @@ class _DescriptionState extends State<Description> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Text(
-                              "Número de risco",
+                              'Número de risco',
                               style: Theme.of(context).textTheme.headline4,
                             ),
                             Text(
-                              this.reagent.riskNumber,
+                              reagent.riskNumber,
                               style: Theme.of(context).textTheme.headline2,
                             ),
                           ],
@@ -80,7 +80,7 @@ class _DescriptionState extends State<Description> {
                       padding: EdgeInsets.symmetric(
                         vertical: verticalScale(15),
                       ),
-                      margin: EdgeInsets.all(0),
+                      margin: const EdgeInsets.all(0),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.black, width: 4.0),
                       ),
@@ -89,11 +89,11 @@ class _DescriptionState extends State<Description> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Text(
-                              "Número da ONU",
+                              'Número da ONU',
                               style: Theme.of(context).textTheme.headline4,
                             ),
                             Text(
-                              this.reagent.numberONU.toString(),
+                              reagent.numberONU.toString(),
                               style: Theme.of(context).textTheme.headline2,
                             ),
                           ],
@@ -121,14 +121,11 @@ class _DescriptionState extends State<Description> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Text(
-                          "Número de Classe de Risco",
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .headline4,
+                          'Número de Classe de Risco',
+                          style: Theme.of(context).textTheme.headline4,
                         ),
                         Text(
-                          this.reagent.riskClass,
+                          reagent.riskClass,
                           style: Theme.of(context).textTheme.headline2,
                         ),
                       ],
@@ -138,23 +135,21 @@ class _DescriptionState extends State<Description> {
               ),
               Row(
                 children: [
-                  Container(
-                    child: Image.asset(
-                      'lib/assets/weight-hanging-solid.png',
-                      height: verticalScale(74),
-                    ),
+                  Image.asset(
+                    'lib/assets/weight-hanging-solid.png',
+                    height: verticalScale(74),
                   ),
                   Column(
                     children: [
                       Text(
-                        "Número de Classe de Risco",
+                        'Número de Classe de Risco',
                         style: Theme.of(context)
                             .textTheme
                             .headline4
                             .apply(color: Colors.white),
                       ),
                       Text(
-                        this.reagent.limit + " KG",
+                        reagent.limit + ' KG',
                         style: Theme.of(context)
                             .textTheme
                             .headline2
@@ -175,22 +170,20 @@ class _DescriptionState extends State<Description> {
   void initState() {
     super.initState();
 
-    Box<Reagent> box = Hive.box<Reagent>("onuBox");
+    Box<Reagent> box = Hive.box<Reagent>('onuBox');
     if (box.isOpen) {
-      try {
-        reagent = box.values.firstWhere(
-              (element) =>
-          element.numberONU == this.widget.numberOnu &&
-              element.riskNumber == this.widget.riskNumber,
-        );
-      } catch (exception) {}
+      reagent = box.values.firstWhere(
+        (element) =>
+            element.numberONU == widget.numberOnu &&
+            element.riskNumber == widget.riskNumber,
+      );
     } else {
-      Hive.openBox<Reagent>("onuBox").then((value) {
+      Hive.openBox<Reagent>('onuBox').then((value) {
         box = value;
         reagent = box.values.firstWhere(
-              (element) =>
-          element.numberONU == this.widget.numberOnu &&
-              element.riskNumber == this.widget.riskNumber,
+          (element) =>
+              element.numberONU == widget.numberOnu &&
+              element.riskNumber == widget.riskNumber,
         );
       });
     }
