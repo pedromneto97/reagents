@@ -47,7 +47,6 @@ class _DetectState extends State<Detect> {
         }
       }
     }
-    startDetecting();
   }
 
   clear() {
