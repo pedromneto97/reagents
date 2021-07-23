@@ -201,37 +201,30 @@ class _DetectState extends State<Detect> {
                 ],
               ),
             ),
-            found
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: ElevatedButton(
-                            onPressed: clear,
-                            child: const Text('Limpar'),
-                          ),
-                        ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                if (found)
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: OutlinedButton(
+                        onPressed: clear,
+                        child: const Text('Limpar'),
                       ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: OutlinedButton(
-                            onPressed: navigate,
-                            child: const Text('Procurar reagente'),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                : SizedBox(
-                    height: 50,
+                    ),
+                  ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
                     child: ElevatedButton(
                       onPressed: navigate,
                       child: const Text('Procurar reagente'),
                     ),
                   ),
+                ),
+              ],
+            )
           ],
         ),
       ),
