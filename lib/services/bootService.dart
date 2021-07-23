@@ -10,7 +10,7 @@ void initializeData() async {
     final jsonData = await rootBundle
         .loadString("lib/assets/onu_table.json")
         .then((value) => jsonDecode(value));
-    final List<Reagent> reagentList = List<Reagent>();
+    final List<Reagent> reagentList = [];
     for (var item in jsonData) {
       final Reagent reagent = Reagent()
         ..nameAndDescription = item["nameAndDescription"]
