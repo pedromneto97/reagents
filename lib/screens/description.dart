@@ -1,16 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:hive/hive.dart';
-import 'package:reagentdetection/models/reagent.dart';
-import 'package:reagentdetection/utils/scale.dart';
+
+import '../models/reagent.dart';
+import '../utils/scale.dart';
 
 class Description extends StatefulWidget {
-  final int? numberOnu;
-  final String? riskNumber;
+  final int numberOnu;
+  final String riskNumber;
 
-  const Description({Key? key, this.numberOnu, this.riskNumber})
-      : super(key: key);
+  const Description({
+    Key? key,
+    required this.numberOnu,
+    required this.riskNumber,
+  }) : super(key: key);
 
   @override
   _DescriptionState createState() => _DescriptionState();
@@ -29,138 +31,134 @@ class _DescriptionState extends State<Description> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(
-          horizontal: scale(36),
-          vertical: verticalScale(29),
+          horizontal: 16,
+          vertical: 16,
         ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Text(
-                reagent.nameAndDescription,
-                style: Theme.of(context).textTheme.headline3,
-                textAlign: TextAlign.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Text(
+              reagent.nameAndDescription,
+              style: Theme.of(context).textTheme.headline3,
+              textAlign: TextAlign.center,
+            ),
+            Container(
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(
+                horizontal: 2,
+                vertical: 2,
               ),
-              Container(
-                color: Colors.white,
-                padding: EdgeInsets.symmetric(
-                  horizontal: scale(3),
-                  vertical: verticalScale(3),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: verticalScale(15),
-                      ),
-                      margin: const EdgeInsets.all(0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 4.0),
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              'Número de risco',
-                              style: Theme.of(context).textTheme.headline4,
-                            ),
-                            Text(
-                              reagent.riskNumber,
-                              style: Theme.of(context).textTheme.headline2,
-                            ),
-                          ],
-                        ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 16,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 4.0),
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Text(
+                            'Número de risco',
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                          Text(
+                            reagent.riskNumber,
+                            style: Theme.of(context).textTheme.headline2,
+                          ),
+                        ],
                       ),
                     ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: verticalScale(15),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 16,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 4.0),
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Text(
+                            'Número da ONU',
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                          Text(
+                            reagent.numberONU.toString(),
+                            style: Theme.of(context).textTheme.headline2,
+                          ),
+                        ],
                       ),
-                      margin: const EdgeInsets.all(0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black, width: 4.0),
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              'Número da ONU',
-                              style: Theme.of(context).textTheme.headline4,
-                            ),
-                            Text(
-                              reagent.numberONU.toString(),
-                              style: Theme.of(context).textTheme.headline2,
-                            ),
-                          ],
-                        ),
-                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(
+                horizontal: 2,
+                vertical: 2,
+              ),
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 8,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 4.0),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text(
+                      'Número de Classe de Risco',
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
+                    Text(
+                      reagent.riskClass,
+                      style: Theme.of(context).textTheme.headline2,
                     ),
                   ],
                 ),
               ),
-              Container(
-                color: Colors.white,
-                padding: EdgeInsets.symmetric(
-                  horizontal: scale(3),
-                  vertical: verticalScale(3),
+            ),
+            Row(
+              children: [
+                Image.asset(
+                  'lib/assets/weight-hanging-solid.png',
+                  height: verticalScale(74),
                 ),
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: verticalScale(15),
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black, width: 4.0),
-                  ),
-                  child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Text(
-                          'Número de Classe de Risco',
-                          style: Theme.of(context).textTheme.headline4,
-                        ),
-                        Text(
-                          reagent.riskClass,
-                          style: Theme.of(context).textTheme.headline2,
-                        ),
-                      ],
+                Column(
+                  children: [
+                    Text(
+                      'Número de Classe de Risco',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4!
+                          .apply(color: Colors.white),
                     ),
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Image.asset(
-                    'lib/assets/weight-hanging-solid.png',
-                    height: verticalScale(74),
-                  ),
-                  Column(
-                    children: [
-                      Text(
-                        'Número de Classe de Risco',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline4!
-                            .apply(color: Colors.white),
-                      ),
-                      Text(
-                        reagent.limit + ' KG',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline2!
-                            .apply(color: Colors.white),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ],
-          ),
+                    Text(
+                      reagent.limit + ' KG',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline2!
+                          .apply(color: Colors.white),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -171,6 +169,7 @@ class _DescriptionState extends State<Description> {
     super.initState();
 
     Box<Reagent> box = Hive.box<Reagent>('onuBox');
+    print(box.isOpen);
     if (box.isOpen) {
       reagent = box.values.firstWhere(
         (element) =>
@@ -185,6 +184,7 @@ class _DescriptionState extends State<Description> {
               element.numberONU == widget.numberOnu &&
               element.riskNumber == widget.riskNumber,
         );
+        setState(() {});
       });
     }
   }
