@@ -7,10 +7,10 @@ import 'package:reagentdetection/services/bootService.dart';
 import 'package:reagentdetection/utils/Scale.dart';
 
 void main() async {
-  runApp(MyApp());
   await Hive.initFlutter();
   Hive.registerAdapter(ReagentAdapter());
   initializeData();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
