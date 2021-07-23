@@ -78,7 +78,11 @@ class _DetectState extends State<Detect> {
   void initState() {
     super.initState();
     ScannerUtils.getCamera(CameraLensDirection.back).then((value) {
-      cameraController = CameraController(value, ResolutionPreset.ultraHigh);
+      cameraController = CameraController(
+        value,
+        ResolutionPreset.ultraHigh,
+        enableAudio: false,
+      );
       this.cameraDescription = value;
       cameraController.initialize().then((_) {
         if (!mounted) {
