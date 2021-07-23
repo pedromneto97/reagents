@@ -7,7 +7,7 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import '../utils/camera_utils.dart';
 
 class Detect extends StatefulWidget {
-  const Detect({Key key}) : super(key: key);
+  const Detect({Key? key}) : super(key: key);
 
   @override
   _DetectState createState() => _DetectState();
@@ -26,8 +26,8 @@ class _DetectState extends State<Detect> {
     r'(x\d{2,3})|\d{2,4}',
     caseSensitive: false,
   );
-  CameraController cameraController;
-  CameraDescription cameraDescription;
+  CameraController? cameraController;
+  late CameraDescription cameraDescription;
   bool found = false;
   bool isDetecting = false;
 
@@ -36,8 +36,8 @@ class _DetectState extends State<Detect> {
     for (TextBlock block in processedImage.blocks) {
       List<TextLine> lines = block.lines;
       if (lines.length == 2) {
-        String firstLine = riskNumberRegex.stringMatch(lines.first.text);
-        String secondLine = numberOnuRegex.stringMatch(lines[1].text);
+        String? firstLine = riskNumberRegex.stringMatch(lines.first.text);
+        String? secondLine = numberOnuRegex.stringMatch(lines[1].text);
         if (firstLine != null && secondLine != null) {
           firstLineController.text = firstLine;
           secondLineController.text = secondLine;
@@ -58,7 +58,7 @@ class _DetectState extends State<Detect> {
   }
 
   void startDetecting() {
-    cameraController.startImageStream((CameraImage image) {
+    cameraController!.startImageStream((CameraImage image) {
       if (isDetecting || found) {
         return;
       }
@@ -84,7 +84,7 @@ class _DetectState extends State<Detect> {
         enableAudio: false,
       );
       cameraDescription = value;
-      cameraController.initialize().then((_) {
+      cameraController!.initialize().then((_) {
         if (!mounted) {
           return;
         }
@@ -106,15 +106,15 @@ class _DetectState extends State<Detect> {
 
   onSubmitFirstLine(v) => secondLineFocusNode.requestFocus();
 
-  String validateFirstLine(String value) => !riskNumberRegex.hasMatch(value)
+  String? validateFirstLine(String? value) => !riskNumberRegex.hasMatch(value!)
       ? 'Não é um número de risco válido'
       : null;
 
-  String validateSecondLine(String value) =>
-      !numberOnuRegex.hasMatch(value) ? 'Não é um número da ONU válido' : null;
+  String? validateSecondLine(String? value) =>
+      !numberOnuRegex.hasMatch(value!) ? 'Não é um número da ONU válido' : null;
 
   navigate() {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       return Navigator.pushNamed(context, '/reagent', arguments: {
         'riskNumber': firstLineController.text,
         'numberOnu': int.parse(secondLineController.text),

@@ -6,10 +6,10 @@ import 'package:reagentdetection/models/reagent.dart';
 import 'package:reagentdetection/utils/scale.dart';
 
 class Description extends StatefulWidget {
-  final int numberOnu;
-  final String riskNumber;
+  final int? numberOnu;
+  final String? riskNumber;
 
-  const Description({Key key, this.numberOnu, this.riskNumber})
+  const Description({Key? key, this.numberOnu, this.riskNumber})
       : super(key: key);
 
   @override
@@ -17,7 +17,7 @@ class Description extends StatefulWidget {
 }
 
 class _DescriptionState extends State<Description> {
-  Reagent reagent;
+  late Reagent reagent;
 
   @override
   Widget build(BuildContext context) {
@@ -145,14 +145,14 @@ class _DescriptionState extends State<Description> {
                         'Número de Classe de Risco',
                         style: Theme.of(context)
                             .textTheme
-                            .headline4
+                            .headline4!
                             .apply(color: Colors.white),
                       ),
                       Text(
                         reagent.limit + ' KG',
                         style: Theme.of(context)
                             .textTheme
-                            .headline2
+                            .headline2!
                             .apply(color: Colors.white),
                       ),
                     ],

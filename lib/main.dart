@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:reagentdetection/models/reagent.dart';
-import 'package:reagentdetection/screens/screens.dart';
-import 'package:reagentdetection/services/boot_service.dart';
-import 'package:reagentdetection/utils/scale.dart';
+
+import 'models/reagent.dart';
+import 'screens/screens.dart';
+import 'services/boot_service.dart';
+import 'utils/scale.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -14,7 +15,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +95,9 @@ class MyApp extends StatelessWidget {
         '/': (context) => const Home(),
         '/detect': (context) => const Detect(),
         '/reagent': (context) {
-          final Map<String, dynamic> args =
-              ModalRoute.of(context).settings.arguments;
+          final Map<String, dynamic> args = ModalRoute.of(context)!
+              .settings
+              .arguments as Map<String, dynamic>;
           return Description(
             numberOnu: args['numberOnu'],
             riskNumber: args['riskNumber'],

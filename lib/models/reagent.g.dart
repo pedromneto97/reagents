@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of './reagent.dart';
+part of 'reagent.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -8,13 +8,13 @@ part of './reagent.dart';
 
 class ReagentAdapter extends TypeAdapter<Reagent> {
   @override
-  final typeId = 0;
+  final int typeId = 0;
 
   @override
   Reagent read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Reagent()
       ..nameAndDescription = fields[0] as String
@@ -39,4 +39,14 @@ class ReagentAdapter extends TypeAdapter<Reagent> {
       ..writeByte(4)
       ..write(obj.limit);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ReagentAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
