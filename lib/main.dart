@@ -1,16 +1,18 @@
+import 'package:bloc/bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
-import 'models/reagent.dart';
 import 'screens/screens.dart';
-import 'services/boot_service.dart';
+import 'utils/my_bloc_observer.dart';
 import 'utils/scale.dart';
 
 void main() async {
-  await Hive.initFlutter();
-  Hive.registerAdapter(ReagentAdapter());
-  initializeData();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Future.wait([
+    Firebase.initializeApp(),
+  ]);
+  if (kDebugMode) Bloc.observer = MyBlocObserver();
   runApp(const MyApp());
 }
 
