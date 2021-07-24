@@ -1,3 +1,3 @@
-export './description.dart';
-export './detect.dart';
 export './home.dart';
+export 'description/description.dart';
+export 'detect/detect.dart';
