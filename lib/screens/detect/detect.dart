@@ -4,7 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 
-import '../utils/camera_utils.dart';
+import '../../utils/camera_utils.dart';
 
 class Detect extends StatefulWidget {
   const Detect({Key? key}) : super(key: key);
