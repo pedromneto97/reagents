@@ -1,21 +1,30 @@
-import 'package:hive/hive.dart';
+import 'package:equatable/equatable.dart';
 
-part 'reagent.g.dart';
+class Reagent extends Equatable {
+  final String nameAndDescription;
 
-@HiveType(typeId: 0)
-class Reagent {
-  @HiveField(0)
-  late final String nameAndDescription;
+  final int numberONU;
 
-  @HiveField(1)
-  late final int numberONU;
+  final String riskClass;
 
-  @HiveField(2)
-  late final String riskClass;
+  final String? riskNumber;
 
-  @HiveField(3)
-  late final String riskNumber;
+  final String? limit;
 
-  @HiveField(4)
-  late final String limit;
+  const Reagent({
+    required this.nameAndDescription,
+    required this.numberONU,
+    required this.riskClass,
+    this.riskNumber,
+    this.limit,
+  });
+
+  @override
+  List<dynamic> get props => [
+        nameAndDescription,
+        numberONU,
+        riskClass,
+        riskNumber,
+        limit,
+      ];
 }
