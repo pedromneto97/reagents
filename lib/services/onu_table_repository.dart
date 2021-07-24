@@ -16,8 +16,6 @@ class OnuTableRepository {
     required String riskNumber,
     required int onuNumber,
   }) async {
-    print(onuNumber);
-    print(riskNumber);
     final data = await FirebaseFirestore.instance
         .collection('onu_table')
         .where(
