@@ -77,9 +77,10 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   fonts:
-    - family: ArialRoundedMT
+    - family: Roboto
       fonts:
-        - asset: fonts/arial-rounded-mt-bold.ttf
+        - asset: fonts/Roboto-Regular.ttf
+        - asset: fonts/Roboto-Bold.ttf
           weight: 700
   #
   # For details regarding fonts from package dependencies,
