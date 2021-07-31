@@ -23,19 +23,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  camera: ^0.8.1+5
+  camera: ^0.8.1+7
   firebase_core: ^1.4.0
   cloud_firestore: ^2.4.0
   google_ml_kit: ^0.7.0
   bloc: ^7.0.0
-  flutter_bloc: ^7.0.1
+  flutter_bloc: ^7.1.0
   equatable: ^2.0.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  hive_generator: ^1.1.0
-  build_runner: ^2.0.6
   flutter_lints: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
