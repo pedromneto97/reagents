@@ -7,6 +7,7 @@ final appTheme = ThemeData(
   backgroundColor: black,
   scaffoldBackgroundColor: black,
   fontFamily: 'Roboto',
+  brightness: Brightness.dark,
   textTheme: const TextTheme(
     bodyText1: TextStyle(
       color: Colors.white,

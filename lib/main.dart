@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:reagentdetection/theme/colors.dart';
 
 import 'screens/screens.dart';
 import 'theme/theme.dart';
@@ -12,7 +14,17 @@ void main() async {
   await Future.wait([
     Firebase.initializeApp(),
   ]);
+
   if (kDebugMode) Bloc.observer = MyBlocObserver();
+
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: grey.withOpacity(0.5),
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarIconBrightness: Brightness.light,
+    ),
+  );
   runApp(const MyApp());
 }
 
