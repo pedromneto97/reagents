@@ -38,7 +38,7 @@ class Home extends StatelessWidget {
                             ),
                           ],
                         ),
-                        style: Theme.of(context).textTheme.bodyText1,
+                        style: Theme.of(context).textTheme.subtitle1,
                         textAlign: TextAlign.center,
                       ),
                     ),
