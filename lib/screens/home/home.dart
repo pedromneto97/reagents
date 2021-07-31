@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/button_text_with_icon/button_text_with_icon.dart';
+
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -46,29 +48,23 @@ class Home extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  ElevatedButton.icon(
+                  ElevatedButton(
                     onPressed: () => Navigator.pushNamed(
                       context,
                       '/detect',
                     ),
-                    label: const Text(
-                      'Detectar Reagente',
-                    ),
-                    icon: const Icon(
-                      Icons.camera_alt_outlined,
-                      size: 40,
+                    child: const ButtonTextWithIcon(
+                      text: 'Detectar Reagente',
+                      icon: Icons.camera_alt_outlined,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 24.0),
-                    child: OutlinedButton.icon(
+                    child: OutlinedButton(
                       onPressed: () {},
-                      label: const Text(
-                        'Sobre',
-                      ),
-                      icon: const Icon(
-                        Icons.info_outline_rounded,
-                        size: 40,
+                      child: const ButtonTextWithIcon(
+                        text: 'Sobre',
+                        icon: Icons.info_outline_rounded,
                       ),
                     ),
                   ),
