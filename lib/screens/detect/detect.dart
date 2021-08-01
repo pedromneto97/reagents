@@ -6,6 +6,8 @@ import '../../utils/regex.dart';
 import '../../widgets/clear_text_field_button/clear_text_field_button.dart';
 
 class Detect extends StatefulWidget {
+  static const String screenName = 'detect_screen';
+
   const Detect({Key? key}) : super(key: key);
 
   @override

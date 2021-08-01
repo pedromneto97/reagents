@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../widgets/button_text_with_icon/button_text_with_icon.dart';
 
 class Home extends StatelessWidget {
+  static const screenName = 'home_screen';
+
   const Home({Key? key}) : super(key: key);
 
   @override
