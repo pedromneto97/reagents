@@ -25,7 +25,21 @@ const textTheme = TextTheme(
     fontWeight: FontWeight.bold,
   ),
   headline3: TextStyle(
+    fontSize: 32,
+    height: 1.25,
+    fontWeight: FontWeight.bold,
+    letterSpacing: 9.6,
+    color: black,
+  ),
+  headline4: TextStyle(
+    fontSize: 24,
+    height: 2,
+    fontWeight: FontWeight.bold,
+    color: primary,
+  ),
+  headline5: TextStyle(
     color: Colors.white,
+    fontWeight: FontWeight.bold,
     fontSize: 18,
     height: 2.22,
   ),
