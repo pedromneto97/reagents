@@ -3,8 +3,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'screens/screens.dart';
+import 'services/preferences_service.dart';
 import 'theme/colors.dart' show grey;
 import 'theme/theme.dart';
 import 'utils/my_bloc_observer.dart';
@@ -13,6 +17,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Future.wait([
     Firebase.initializeApp(),
+    Hive.initFlutter(),
   ]);
 
   if (kDebugMode) Bloc.observer = MyBlocObserver();
@@ -33,24 +38,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Detecção de reagentes',
-      theme: appTheme,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const Home(),
-        '/detect': (context) => const Detect(),
-        '/reagent': (context) {
-          final Map<String, dynamic> args = ModalRoute.of(context)!
-              .settings
-              .arguments as Map<String, dynamic>;
-          return Description(
-            numberOnu: args['numberOnu'],
-            riskNumber: args['riskNumber'],
-          );
+    return RepositoryProvider(
+      create: (context) => PreferencesService(),
+      lazy: false,
+      child: MaterialApp(
+        title: 'Detecção de reagentes',
+        theme: appTheme,
+        initialRoute: Home.screenName,
+        routes: {
+          Home.screenName: (context) => const Home(),
+          Detect.screenName: (context) => const Detect(),
+          '/reagent': (context) {
+            final Map<String, dynamic> args = ModalRoute.of(context)!
+                .settings
+                .arguments as Map<String, dynamic>;
+            return Description(
+              numberOnu: args['numberOnu'],
+              riskNumber: args['riskNumber'],
+            );
+          },
+          Onboarding.screenName: (context) => Onboarding(),
         },
-        Onboarding.screenName: (context) => const Onboarding(),
-      },
+      ),
     );
   }
 }
