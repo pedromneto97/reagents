@@ -49,6 +49,7 @@ class MyApp extends StatelessWidget {
             riskNumber: args['riskNumber'],
           );
         },
+        Onboarding.screenName: (context) => const Onboarding(),
       },
     );
   }
