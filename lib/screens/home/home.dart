@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../services/preferences_service.dart';
 import '../../widgets/button_text_with_icon/button_text_with_icon.dart';
+import '../detect/detect.dart';
+import '../onboarding/onboarding.dart';
 
 class Home extends StatelessWidget {
   static const screenName = 'home_screen';
@@ -51,10 +55,17 @@ class Home extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ElevatedButton(
-                    onPressed: () => Navigator.pushNamed(
-                      context,
-                      '/detect',
-                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        RepositoryProvider.of<PreferencesService>(context)
+                                .getPreference(
+                          key: PreferencesService.dontShowKey,
+                        )
+                            ? Detect.screenName
+                            : Onboarding.screenName,
+                      );
+                    },
                     child: const ButtonTextWithIcon(
                       text: 'Detectar Reagente',
                       icon: Icons.camera_alt_outlined,
