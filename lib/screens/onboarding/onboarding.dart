@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../services/preferences_service.dart';
 import '../../widgets/security_panel/security_panel.dart';
+import '../detect/detect.dart';
 import 'widgets/dont_show_again_checkbox.dart';
 
 class Onboarding extends StatelessWidget {
   static const screenName = 'onboarding_screen';
 
-  const Onboarding({Key? key}) : super(key: key);
+  Onboarding({Key? key}) : super(key: key);
+
+  bool dontShowAgain = false;
+
+  void onValueChange(bool value) {
+    dontShowAgain = value;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +56,22 @@ class Onboarding extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const DontShowAgainCheckbox(),
+                DontShowAgainCheckbox(
+                  onChange: onValueChange,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: ElevatedButton(
-                    onPressed: () =>
-                        Navigator.of(context).pushReplacementNamed('/detect'),
+                    onPressed: () async {
+                      await RepositoryProvider.of<PreferencesService>(context)
+                          .setPreference(
+                        key: PreferencesService.dontShowKey,
+                        value: dontShowAgain,
+                      );
+                      Navigator.of(context).pushReplacementNamed(
+                        Detect.screenName,
+                      );
+                    },
                     child: const Text('Continuar'),
                   ),
                 ),

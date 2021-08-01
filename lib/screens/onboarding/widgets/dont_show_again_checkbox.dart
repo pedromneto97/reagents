@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../theme/colors.dart' show black, primary;
 
 class DontShowAgainCheckbox extends StatefulWidget {
-  const DontShowAgainCheckbox({Key? key}) : super(key: key);
+  final ValueChanged<bool> onChange;
+
+  const DontShowAgainCheckbox({
+    Key? key,
+    required this.onChange,
+  }) : super(key: key);
 
   @override
   _DontShowAgainCheckboxState createState() => _DontShowAgainCheckboxState();
@@ -16,6 +21,7 @@ class _DontShowAgainCheckboxState extends State<DontShowAgainCheckbox> {
     setState(() {
       dontShowAgain = value ?? false;
     });
+    widget.onChange(dontShowAgain);
   }
 
   @override
