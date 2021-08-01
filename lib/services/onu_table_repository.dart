@@ -35,7 +35,7 @@ class OnuTableRepository {
     final reagent = data.docs.first;
     return Reagent(
       nameAndDescription: reagent['nameAndDescription'],
-      numberONU: reagent['numberONU'],
+      unNumber: reagent['numberONU'],
       riskClass: reagent['riskClass'],
       limit: reagent['limit'],
       riskNumber: reagent['riskNumber'],

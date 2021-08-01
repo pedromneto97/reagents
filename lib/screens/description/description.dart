@@ -108,7 +108,7 @@ class Description extends StatelessWidget {
                                         Theme.of(context).textTheme.headline4,
                                   ),
                                   Text(
-                                    state.reagent.numberONU.toString(),
+                                    state.reagent.unNumber.toString(),
                                     style:
                                         Theme.of(context).textTheme.headline2,
                                   ),
