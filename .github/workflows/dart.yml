@@ -26,7 +26,9 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
       - name: Create firebase file
-        run: ${{ env.GOOGLE_SERVICES_JSON }} >> android/app/google-services.json
+        env:
+         GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo $GOOGLE_SERVICES_JSON | base64 -d > android/app/google-services.json
       - run: flutter build apk
         name: Build apk
       - name: Archive production artifacts
