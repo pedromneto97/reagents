@@ -1,30 +1,39 @@
 import 'package:equatable/equatable.dart';
 
-class Reagent extends Equatable {
-  final String nameAndDescription;
-
-  final int numberONU;
-
-  final String riskClass;
-
+class UnReagent extends Equatable {
+  final int unNumber;
   final String? riskNumber;
 
+  const UnReagent({
+    required this.unNumber,
+    required this.riskNumber,
+  });
+
+  @override
+  List<dynamic> get props => [unNumber, riskNumber];
+}
+
+class Reagent extends UnReagent {
+  final String nameAndDescription;
+  final String riskClass;
   final String? limit;
 
   const Reagent({
     required this.nameAndDescription,
-    required this.numberONU,
+    required int unNumber,
     required this.riskClass,
-    this.riskNumber,
+    String? riskNumber,
     this.limit,
-  });
+  }) : super(
+          unNumber: unNumber,
+          riskNumber: riskNumber,
+        );
 
   @override
   List<dynamic> get props => [
+        ...super.props,
         nameAndDescription,
-        numberONU,
         riskClass,
-        riskNumber,
         limit,
       ];
 }
