@@ -12,33 +12,37 @@ class OnuTableRepository {
     return _instance;
   }
 
+  CollectionReference<Reagent> get collection =>
+      FirebaseFirestore.instance.collection('onu_table').withConverter<Reagent>(
+            fromFirestore: (snapshot, _) => Reagent.fromJson(snapshot.data()!),
+            toFirestore: (value, _) => value.toJson(),
+          );
+
+  GetOptions get fromCacheOptions => const GetOptions(source: Source.cache);
+  GetOptions get fromServerOptions => const GetOptions(source: Source.server);
+
   Future<Reagent> find({
     required String riskNumber,
     required int onuNumber,
   }) async {
-    final data = await FirebaseFirestore.instance
-        .collection('onu_table')
-        .where(
-          'numberONU',
-          isEqualTo: onuNumber,
-        )
-        .where(
-          'riskNumber',
-          isEqualTo: riskNumber,
-        )
-        .limit(1)
-        .get();
+    final query = collection.where(
+      'numberONU',
+      isEqualTo: onuNumber,
+    );
+
+    if (riskNumber.isNotEmpty) {
+      query.where(
+        'riskNumber',
+        isEqualTo: riskNumber,
+      );
+    }
+
+    final data = await query.get(fromCacheOptions);
 
     if (data.size == 0) {
       throw const ReagentNotFound();
     }
-    final reagent = data.docs.first;
-    return Reagent(
-      nameAndDescription: reagent['nameAndDescription'],
-      unNumber: reagent['numberONU'],
-      riskClass: reagent['riskClass'],
-      limit: reagent['limit'],
-      riskNumber: reagent['riskNumber'],
-    );
+
+    return data.docs.first.data();
   }
 }
