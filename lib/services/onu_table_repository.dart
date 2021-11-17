@@ -45,4 +45,13 @@ class OnuTableRepository {
 
     return data.docs.first.data();
   }
+
+  Future<List<Reagent>> get({
+    bool fromCache = true,
+  }) async {
+    final data = await collection.get(
+      fromCache ? fromCacheOptions : fromServerOptions,
+    );
+    return data.docs.map((e) => e.data()).toList(growable: false);
+  }
 }
