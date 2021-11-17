@@ -6,11 +6,16 @@ import '../../widgets/security_panel/security_panel.dart';
 import '../detect/detect.dart';
 import 'widgets/dont_show_again_checkbox.dart';
 
-class Onboarding extends StatelessWidget {
+class Onboarding extends StatefulWidget {
   static const screenName = 'onboarding_screen';
 
-  Onboarding({Key? key}) : super(key: key);
+  const Onboarding({Key? key}) : super(key: key);
 
+  @override
+  State<Onboarding> createState() => _OnboardingState();
+}
+
+class _OnboardingState extends State<Onboarding> {
   bool dontShowAgain = false;
 
   void onValueChange(bool value) {
