@@ -29,6 +29,23 @@ class Reagent extends UnReagent {
           riskNumber: riskNumber,
         );
 
+  Reagent.fromJson(Map<String, Object?> json)
+      : this(
+          nameAndDescription: json['nameAndDescription'] as String,
+          unNumber: json['numberONU'] as int,
+          riskClass: json['riskClass'] as String,
+          limit: json['limit'] as String?,
+          riskNumber: json['riskNumber'] as String?,
+        );
+
+  Map<String, dynamic> toJson() => {
+        'nameAndDescription': nameAndDescription,
+        'numberONU': unNumber,
+        'riskClass': riskClass,
+        'limit': limit,
+        'riskNumber': riskNumber,
+      };
+
   @override
   List<dynamic> get props => [
         ...super.props,
