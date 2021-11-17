@@ -22,6 +22,16 @@ class _OnboardingState extends State<Onboarding> {
     dontShowAgain = value;
   }
 
+  void onPressNext() async {
+    await RepositoryProvider.of<PreferencesService>(context).setPreference(
+      key: PreferencesService.dontShowKey,
+      value: dontShowAgain,
+    );
+    Navigator.of(context).pushReplacementNamed(
+      Detect.screenName,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,16 +77,7 @@ class _OnboardingState extends State<Onboarding> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: ElevatedButton(
-                    onPressed: () async {
-                      await RepositoryProvider.of<PreferencesService>(context)
-                          .setPreference(
-                        key: PreferencesService.dontShowKey,
-                        value: dontShowAgain,
-                      );
-                      Navigator.of(context).pushReplacementNamed(
-                        Detect.screenName,
-                      );
-                    },
+                    onPressed: onPressNext,
                     child: const Text('Continuar'),
                   ),
                 ),
